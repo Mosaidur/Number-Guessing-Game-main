@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <link rel="icon" type="image/x-icon" href="https://thumbs.dreamstime.com/b/premium-black-number-logo-design-simple-typography-vector-illustration-343216013.jpg">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(to bottom right, #f7f7f7, #e9e9ff);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        header {
+            width: 100%;
+            padding: 20px 0;
+            background: #6c5ce7;
+            color: white;
+            text-align: center;
+            font-weight: 500;
+            font-size: 1.2rem;
+        }
+
+        main {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .logo-main {
+            width: 60px;
+            margin-bottom: 15px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            font-size: 1rem;
+            margin: 15px 0;
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"]:focus {
+            border-color: #6c5ce7;
+            outline: none;
+            box-shadow: 0 0 5px rgba(108, 92, 231, 0.4);
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 5px;
+            background: linear-gradient(to right, #6c5ce7, #a29bfe);
+            color: white;
+            box-shadow: 0 4px 10px rgba(108, 92, 231, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(108, 92, 231, 0.5);
+        }
+
+        .message {
+            font-weight: 600;
+            color: #2d3436;
+            margin-top: 15px;
+        }
+
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            text-align: center;
+            color: #636e72;
+        }
+
+        .footer-logo {
+            width: 40px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Number Guessing Game
+    </header>
+    <main>
+        <img class="logo-main" src="https://thumbs.dreamstime.com/b/premium-black-number-logo-design-simple-typography-vector-illustration-343216013.jpg" alt="Game Logo">
+        <p>Guess a number between 1 and 100:</p>
+        <input type="number" id="guessInput" placeholder="Enter your guess" min="1" max="100">
+        <button onclick="submitGuess()">Submit Guess</button>
+        <button onclick="restartGame()">Restart Game</button>
+        <div class="message" id="message"></div>
+        <p id="attemptsLeft"></p>
+    </main>
+    <footer>
+        <p>A simple and fun number guessing game! Try your luck!</p>
+        <img class="footer-logo" src="https://thumbs.dreamstime.com/b/premium-black-number-logo-design-simple-typography-vector-illustration-343216013.jpg" alt="Footer Logo">
+    </footer>
+    <script>
+        let randomNumber;
+        let attemptsLeft;
+        const maxAttempts = 10;
+
+        function startGame() {
+            randomNumber = Math.floor(Math.random() * 100) + 1;
+            attemptsLeft = maxAttempts;
+            document.getElementById("message").textContent = "";
+            document.getElementById("attemptsLeft").textContent = `Attempts left: ${attemptsLeft}`;
+            document.getElementById("guessInput").value = "";
+            document.getElementById("guessInput").disabled = false;
+        }
+
+        function submitGuess() {
+            const userGuess = parseInt(document.getElementById("guessInput").value);
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                document.getElementById("message").textContent = "Please enter a valid number between 1 and 100.";
+                return;
+            }
+
+            attemptsLeft--;
+            document.getElementById("attemptsLeft").textContent = `Attempts left: ${attemptsLeft}`;
+
+            if (userGuess === randomNumber) {
+                document.getElementById("message").textContent = "Congratulations! You guessed it!";
+                endGame();
+            } else if (userGuess < randomNumber) {
+                document.getElementById("message").textContent = "Too low!";
+            } else {
+                document.getElementById("message").textContent = "Too high!";
+            }
+
+            if (attemptsLeft === 0 && userGuess !== randomNumber) {
+                document.getElementById("message").textContent = "Game Over! You've used all attempts.";
+                endGame();
+            }
+        }
+
+        function endGame() {
+            document.getElementById("guessInput").disabled = true;
+        }
+
+        function restartGame() {
+            startGame();
+        }
+
+        window.onload = startGame;
+    </script>
+</body>
+</html>
